@@ -9,8 +9,8 @@ import java.io.Serializable;
 import javax.persistence.*;
 
 @Entity(name = "foods")
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
 public class FoodEntity implements Serializable{
 	@Id
