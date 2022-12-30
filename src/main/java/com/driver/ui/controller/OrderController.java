@@ -70,6 +70,7 @@ public class OrderController {
 		for(OrderDto orderDto:orderDtos){
 			OrderDetailsResponse orderDetailsResponse=OrderDetailsResponse.builder().items(orderDto.getItems()).cost(orderDto.getCost())
 					.userId(orderDto.getUserId()).status(true).build();
+			orderDetailsResponses.add(orderDetailsResponse);
 		}
 		return orderDetailsResponses;
 	}
