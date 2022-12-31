@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class FoodServiceImpl implements FoodService{
@@ -17,7 +18,8 @@ public class FoodServiceImpl implements FoodService{
     FoodRepository foodRepository;
     @Override
     public FoodDto createFood(FoodDto food) {
-        FoodEntity foodEntity=FoodEntity.builder().foodId(food.getFoodId()).foodCategory(food.getFoodCategory())
+        String foodId= UUID.randomUUID().toString();
+        FoodEntity foodEntity=FoodEntity.builder().foodId(foodId).foodCategory(food.getFoodCategory())
                         .foodName(food.getFoodName()).foodPrice(food.getFoodPrice()).build();
         foodRepository.save(foodEntity);
         return food;
@@ -44,7 +46,9 @@ public class FoodServiceImpl implements FoodService{
         }
         FoodDto foodDto=foodDetails;
         foodDto.setId(foodEntity.getId());
-        foodRepository.updateFoodEntity(foodEntity.getId(), foodDetails.getFoodId(), foodDetails.getFoodName(), foodDetails.getFoodPrice(), foodDetails.getFoodCategory());
+        FoodEntity food = FoodEntity.builder().id(foodEntity.getId()).foodName(foodDetails.getFoodName()).foodCategory(foodDetails.getFoodCategory())
+                .foodPrice(foodDetails.getFoodPrice()).foodId(foodId).build();
+        foodRepository.save(food);
         return foodDto;
     }
 

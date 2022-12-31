@@ -10,13 +10,16 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
+
 @Service
 public class OrderServiceImpl implements OrderService{
     @Autowired
     OrderRepository orderRepository;
     @Override
     public OrderDto createOrder(OrderDto order) {
-        OrderEntity orderEntity=OrderEntity.builder().orderId(order.getOrderId()).cost(order.getCost()).items(order.getItems())
+        String orderId= UUID.randomUUID().toString();
+        OrderEntity orderEntity=OrderEntity.builder().orderId(orderId).cost(order.getCost()).items(order.getItems())
                 .status(order.isStatus()).userId(order.getUserId()).build();
         orderRepository.save(orderEntity);
         return order;
@@ -43,7 +46,9 @@ public class OrderServiceImpl implements OrderService{
         }
         OrderDto orderDto=order;
         orderDto.setId(orderEntity.getId());
-        orderRepository.updateOrderEntity(order.getId(), order.getOrderId(), order.getItems(), order.getCost(), order.getUserId(), order.isStatus());
+        OrderEntity order1= OrderEntity.builder().id(orderEntity.getId()).userId(order.getUserId()).status(true).cost(order.getCost())
+                .items(order.getItems()).orderId(orderId).build();
+        orderRepository.save(order1);
         return orderDto;
     }
 

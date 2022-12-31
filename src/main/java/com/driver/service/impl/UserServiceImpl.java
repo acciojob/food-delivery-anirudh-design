@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class UserServiceImpl implements UserService{
@@ -22,7 +23,8 @@ public class UserServiceImpl implements UserService{
             System.out.println("User entity already exists");
             return null;
         }
-        UserEntity userEntity2=UserEntity.builder().userId(user.getUserId()).email(user.getEmail()).firstName(user.getFirstName())
+        String userId= UUID.randomUUID().toString();
+        UserEntity userEntity2=UserEntity.builder().userId(userId).email(user.getEmail()).firstName(user.getFirstName())
                 .lastName(user.getLastName()).build();
         userRepository.save(userEntity2);
         return user;
@@ -61,7 +63,9 @@ public class UserServiceImpl implements UserService{
         }
         UserDto userDto=user;
         userDto.setId(userEntity.getId());
-        userRepository.updateUserEntity(userEntity.getId(), user.getUserId(), user.getFirstName(), user.getLastName(), user.getEmail());
+        UserEntity user1= UserEntity.builder().id(userEntity.getId()).userId(user.getUserId()).firstName(user.getFirstName())
+                .lastName(user.getLastName()).email(user.getEmail()).build();
+        userRepository.save(user1);
         return userDto;
     }
 
